@@ -6,3 +6,10 @@ D:\Projects\C# Projects\dynamicnetwork\DynamicNetwork\obj\Debug\DynamicNetwork.c
 D:\Projects\C# Projects\dynamicnetwork\DynamicNetwork\obj\Debug\DynamicNetwork.csproj.CopyComplete
 D:\Projects\C# Projects\dynamicnetwork\DynamicNetwork\obj\Debug\DynamicNetwork.exe
 D:\Projects\C# Projects\dynamicnetwork\DynamicNetwork\obj\Debug\DynamicNetwork.pdb
+K:\GameDev\dynamicnetwork\DynamicNetwork\bin\Debug\DynamicNetwork.exe.config
+K:\GameDev\dynamicnetwork\DynamicNetwork\bin\Debug\DynamicNetwork.exe
+K:\GameDev\dynamicnetwork\DynamicNetwork\bin\Debug\DynamicNetwork.pdb
+K:\GameDev\dynamicnetwork\DynamicNetwork\obj\Debug\DynamicNetwork.csprojResolveAssemblyReference.cache
+K:\GameDev\dynamicnetwork\DynamicNetwork\obj\Debug\DynamicNetwork.csproj.CoreCompileInputs.cache
+K:\GameDev\dynamicnetwork\DynamicNetwork\obj\Debug\DynamicNetwork.exe
+K:\GameDev\dynamicnetwork\DynamicNetwork\obj\Debug\DynamicNetwork.pdb

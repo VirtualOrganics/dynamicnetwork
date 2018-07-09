@@ -10,8 +10,8 @@ namespace DynamicNetwork
     {
         static void Main(string[] args)
         {
-            Core game = new Core();
-            game.Run();
+            Core application = new Core();
+            application.Run();
         }
     }
 }
