@@ -12,6 +12,9 @@ namespace DynamicNetwork
         public Vector2f PointA { get; set; }
         public Vector2f PointB { get; set; }
 
+        public CircleZone mZoneA { get; set; }
+        public CircleZone mZoneB { get; set; }
+
         public Intersection(Vector2f pA, Vector2f pB)
         {
             PointA = pA;

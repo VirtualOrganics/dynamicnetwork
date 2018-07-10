@@ -45,48 +45,49 @@ namespace DynamicNetwork
             mWindow.Draw(mCircleCenterPositionShape);
         }
 
-        // https://math.stackexchange.com/questions/256100/how-can-i-find-the-points-at-which-two-circles-intersect
-        // Somewhere is a bug
+        
         public Intersection GetIntersections(CircleZone other)
         {
-            Vector2f intersection0 = new Vector2f(0,0);
-            Vector2f intersection1 = new Vector2f(0,0);
-            Intersection intersection = null;
             Vector2f direction = other.mPosition - mPosition;
-            float distance = MathUtil.Length(direction);
+            float distanceAway = MathUtil.Length(direction);
 
-            if (distance < mRadius + other.mRadius)
-            {
-                Vector2f term0 = (mPosition + other.mPosition) / 2f;
-                Vector2f term1 = ((mRadius * mRadius - other.mRadius * other.mRadius)
-                                  / (2 * distance * distance)) * direction;
-
-                double sqrtTerm = 0.5 * Math.Sqrt(
-                                      2 * ((mRadius * mRadius + other.mRadius * other.mRadius) / distance * distance)
-                                      - Math.Pow(mRadius * mRadius - other.mRadius * other.mRadius, 2) /
-                                      Math.Pow(distance, 4)
-                                      - 1);
-                Vector2f term3 = (float) sqrtTerm *
-                                 new Vector2f(other.mPosition.Y - mPosition.Y, mPosition.X - other.mPosition.X);
-
-                Vector2f term01 = term0 + term1;
-
-                intersection0 = term01 + term3;
-                intersection1 = term01 - term3;
-
-                Console.WriteLine(intersection0);
-                Console.WriteLine(intersection1);
-
-                intersection = new Intersection(intersection0, intersection1);
-
-            }
-            else
-            {
+            // Both Circles are to far away from ech other - no intersections
+            if (distanceAway > mRadius + other.mRadius)
                 return null;
-            }
+            // No intersection because one circle is contained within the other.
+            if (distanceAway < Math.Abs(mRadius - other.mRadius))
+                return null;
+            // coincident - infinite number of solutions.
+            if (Math.Abs(distanceAway) < 0.01f && Math.Abs(mRadius - other.mRadius) < 0.01f)
+                return null;
 
 
+            // Calculation based on
+            // https://stackoverflow.com/questions/3349125/circle-circle-intersection-points
+            // TODOO: Optimization
 
+            double r0_squ = Math.Pow(mRadius, 2);
+            double r1_squ = Math.Pow(other.mRadius, 2);
+            double d_squ  = Math.Pow(distanceAway, 2);
+            Vector2f p0 = mPosition;
+
+            float a = (float) (r0_squ - r1_squ + d_squ) / (2 * distanceAway);
+            float h = (float) Math.Sqrt(r0_squ - Math.Pow(a, 2));
+
+            Vector2f p2 = p0 + a * MathUtil.Normalize(direction);
+
+            float p3_0_x = p2.X + h * (other.mPosition.Y - mPosition.Y) / distanceAway;
+            float p3_0_y = p2.Y - h * (other.mPosition.X - mPosition.X) / distanceAway;
+
+            float p3_1_x = p2.X - h * (other.mPosition.Y - mPosition.Y) / distanceAway;
+            float p3_1_y = p2.Y + h * (other.mPosition.X - mPosition.X) / distanceAway;
+
+            Vector2f p3_0 = new Vector2f(p3_0_x, p3_0_y);
+            Vector2f p3_1 = new Vector2f(p3_1_x, p3_1_y);
+
+            Intersection intersection = new Intersection(p3_0, p3_1);
+            intersection.mZoneA = this;
+            intersection.mZoneB = other;
 
             return intersection;
         }

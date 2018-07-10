@@ -10,6 +10,9 @@ namespace DynamicNetwork
     {
         private RenderWindow mWindow;
         private Vector2u mScreenSize;
+        private Clock mClock;
+        private float deltaTime;
+
         private Font mFont;
         private Text mText;
 
@@ -25,6 +28,7 @@ namespace DynamicNetwork
             ContextSettings settings = new ContextSettings();
             settings.AntialiasingLevel = 4;
             mWindow = new RenderWindow(new SFML.Window.VideoMode(mScreenSize.X,mScreenSize.Y), "", Styles.Default, settings);
+            mClock = new Clock();
 
             //Setting method "OnClose()" for the Closed-Event (for example: when clicking of the X button of the window)
             mWindow.Closed += OnClose;
@@ -36,7 +40,7 @@ namespace DynamicNetwork
             mText.Position = new Vector2f(mScreenSize.X/2f,mScreenSize.Y/2);
 
             mIntersectionMarker = new CircleShape(4);
-            mIntersectionMarker.FillColor = Color.Cyan;
+            mIntersectionMarker.FillColor = Color.Red;
             mIntersectionMarker.Position = new Vector2f(-100,-100);
             mIntersectionMarker.Origin = new Vector2f(4,4);
 
@@ -47,25 +51,30 @@ namespace DynamicNetwork
             mCircleZones.Add(new CircleZone(mWindow, 120f, new Vector2f(450, 500)));
 
             mAllIntersections = new List<Intersection>();
-
+            deltaTime = 1f;
         }
 
         public void Run()
         {
             while (mWindow.IsOpen)
             {
+                mClock.Restart();
                 mWindow.DispatchEvents();
 
 
-                Update();
+                Update(deltaTime);
                 Render();
+                deltaTime = mClock.ElapsedTime.AsSeconds();
             }
         }
 
-        public void Update()
+        public void Update(float dt)
         {
+            mWindow.SetTitle("FPS: "+1/dt);
+
             // Bruteforce - inefficient O(n²)
             // TODOO: Later: NeighbourSearch
+            mAllIntersections.Clear();
             for(int i=0;i<mCircleZones.Count;i++)
             {
                 for (int j = 0; j < mCircleZones.Count; j++)
