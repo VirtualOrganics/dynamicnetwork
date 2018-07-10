@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using SFML.Graphics;
@@ -58,7 +59,7 @@ namespace DynamicNetwork
             if (distanceAway < Math.Abs(mRadius - other.mRadius))
                 return null;
             // coincident - infinite number of solutions.
-            if (Math.Abs(distanceAway) < 0.01f && Math.Abs(mRadius - other.mRadius) < 0.01f)
+            if (Math.Abs(distanceAway) < 0.001f && Math.Abs(mRadius - other.mRadius) < 0.001f)
                 return null;
 
 
@@ -90,6 +91,26 @@ namespace DynamicNetwork
             intersection.mZoneB = other;
 
             return intersection;
+        }
+
+        public bool PointInZone(Vector2f point)
+        {
+            Vector2f direction = point - mPosition;
+
+            if (MathUtil.SquaredLength(direction) < mRadius * mRadius)
+                return true;
+            else
+                return false;
+        }
+
+        public void MoveTo(Vector2f position)
+        {
+            mPosition = position;
+        }
+
+        public void Move(Vector2f add)
+        {
+            mPosition += add;
         }
     }
 }

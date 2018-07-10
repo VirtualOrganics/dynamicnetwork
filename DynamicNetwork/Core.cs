@@ -13,13 +13,12 @@ namespace DynamicNetwork
         private Clock mClock;
         private float deltaTime;
 
-        private Font mFont;
-        private Text mText;
-
         private List<CircleZone> mCircleZones;
         private List<Intersection> mAllIntersections;
 
         private CircleShape mIntersectionMarker;
+        private CircleZone mCurrentSelected;
+        private Vector2f mousePos;
 
         public Core()
         {
@@ -33,12 +32,6 @@ namespace DynamicNetwork
             //Setting method "OnClose()" for the Closed-Event (for example: when clicking of the X button of the window)
             mWindow.Closed += OnClose;
 
-
-            mFont = new Font("calibri.ttf");
-            mText = new Text("It works!",mFont);
-            mText.Color = Color.Black;
-            mText.Position = new Vector2f(mScreenSize.X/2f,mScreenSize.Y/2);
-
             mIntersectionMarker = new CircleShape(4);
             mIntersectionMarker.FillColor = Color.Red;
             mIntersectionMarker.Position = new Vector2f(-100,-100);
@@ -51,6 +44,7 @@ namespace DynamicNetwork
             mCircleZones.Add(new CircleZone(mWindow, 120f, new Vector2f(450, 500)));
 
             mAllIntersections = new List<Intersection>();
+            mCurrentSelected = null;
             deltaTime = 1f;
         }
 
@@ -61,9 +55,10 @@ namespace DynamicNetwork
                 mClock.Restart();
                 mWindow.DispatchEvents();
 
-
+                Input();
                 Update(deltaTime);
                 Render();
+
                 deltaTime = mClock.ElapsedTime.AsSeconds();
             }
         }
@@ -74,6 +69,7 @@ namespace DynamicNetwork
 
             // Bruteforce - inefficient O(n²)
             // TODOO: Later: NeighbourSearch
+
             mAllIntersections.Clear();
             for(int i=0;i<mCircleZones.Count;i++)
             {
@@ -92,8 +88,6 @@ namespace DynamicNetwork
         public void Render()
         {
             mWindow.Clear(Color.White);
-            mText.Draw(mWindow,RenderStates.Default);
-
 
             foreach (CircleZone zone in mCircleZones)
             {
@@ -111,6 +105,30 @@ namespace DynamicNetwork
 
 
             mWindow.Display();
+        }
+
+        private void Input()
+        {
+            mousePos = (Vector2f)Mouse.GetPosition(mWindow);
+
+            if (Mouse.IsButtonPressed(0) && mCurrentSelected == null)
+            {
+                foreach (CircleZone zone in mCircleZones)
+                {
+                    if (zone.PointInZone(mousePos))
+                    {
+                        mCurrentSelected = zone;
+                    }
+                }
+            }
+            else if (Mouse.IsButtonPressed(0) && mCurrentSelected != null)
+            {
+                mCurrentSelected.MoveTo(mousePos);
+            }
+            else
+            {
+                mCurrentSelected = null;
+            }
         }
 
         //Closing application
