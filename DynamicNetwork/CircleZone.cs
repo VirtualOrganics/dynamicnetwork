@@ -12,6 +12,7 @@ namespace DynamicNetwork
     class CircleZone
     {
         private float mRadius;
+        private int mNodeIdx;
         private Vector2f mPosition;
         private RenderWindow mWindow;
         private CircleShape mCircleRegionShape;
@@ -32,8 +33,8 @@ namespace DynamicNetwork
             mCircleRegionShape.Origin = new Vector2f(mRadius,mRadius);
 
             //Creating a circle which represents the origin of the zone
-            mCircleCenterPositionShape = new CircleShape(2);
-            mCircleCenterPositionShape.Origin = new Vector2f(2,2);
+            mCircleCenterPositionShape = new CircleShape(1);
+            mCircleCenterPositionShape.Origin = new Vector2f(1,1);
             mCircleCenterPositionShape.FillColor = Color.Black;
         }
 
@@ -111,6 +112,21 @@ namespace DynamicNetwork
         public void Move(Vector2f add)
         {
             mPosition += add;
+        }
+
+        public Vector2f GetPosition()
+        {
+            return mPosition;
+        }
+
+        public void SetNodeIndex(int nodeIdx)
+        {
+            mNodeIdx = nodeIdx;
+        }
+
+        public int GetNodeIdx()
+        {
+            return mNodeIdx;
         }
     }
 }
