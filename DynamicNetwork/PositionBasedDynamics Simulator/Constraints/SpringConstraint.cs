@@ -13,6 +13,7 @@ namespace DynamicNetwork.PositionBasedDynamics_Simulator
     {
         public float mRestLength { get; set; }
         public float mStiffness { get; set; }
+        
 
         public SpringConstraint(Node nodeA, Node nodeB, float restLength) : base(nodeA, nodeB)
         {
@@ -48,6 +49,16 @@ namespace DynamicNetwork.PositionBasedDynamics_Simulator
         public override void RenderConstraint(RenderWindow window)
         {
             MathUtil.Line(window, mNodeA.mNewPosition, mNodeB.mNewPosition, Color.Black);
+        }
+
+        public Node GetNodeA()
+        {
+            return mNodeA;
+        }
+
+        public Node GetNodeB()
+        {
+            return mNodeB;
         }
     }
 }

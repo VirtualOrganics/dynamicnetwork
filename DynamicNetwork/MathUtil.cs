@@ -75,5 +75,13 @@ public static class MathUtil
     {
         return i + (N + 2) * j;
     }
+
+    public static Vector2f GetCenterOf(Vector2f start, Vector2f end)
+    {
+        Vector2f direction = end - start;
+        float distance = Length(direction)/2f;
+        Vector2f center = start + Normalize(direction) * distance;
+        return center;
+    }
 }
 

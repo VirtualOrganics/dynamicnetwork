@@ -96,6 +96,8 @@
   <ItemGroup>
     <Compile Include="CircleZone.cs" />
     <Compile Include="Core.cs" />
+    <Compile Include="CurrentConnection.cs" />
+    <Compile Include="CurrentNetwork\Node.cs" />
     <Compile Include="Intersection.cs" />
     <Compile Include="MathUtil.cs" />
     <Compile Include="PositionBasedDynamics Simulator\Constraints\AConstraint.cs" />
@@ -105,6 +107,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestScene.cs" />
+    <Compile Include="TriangleMidpoint.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

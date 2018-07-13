@@ -17,19 +17,21 @@ namespace DynamicNetwork
         private RenderWindow mWindow;
         private CircleShape mCircleRegionShape;
         private CircleShape mCircleCenterPositionShape;
+        private List<Intersection> mIntersectionsFromZone;
 
         public CircleZone(RenderWindow window,float radius, Vector2f position)
         {
             mWindow = window;
             mPosition = position;
             mRadius = radius;
+            mIntersectionsFromZone = new List<Intersection>();
 
             //Creating a drawable circle for the region
             mCircleRegionShape = new CircleShape(mRadius);
             mCircleRegionShape.Position = mPosition;
             mCircleRegionShape.OutlineColor = Color.Black;
             mCircleRegionShape.OutlineThickness = 2f;
-            mCircleRegionShape.FillColor = new Color(188,188,188,150);
+            mCircleRegionShape.FillColor = new Color(188,188,188,110);
             mCircleRegionShape.Origin = new Vector2f(mRadius,mRadius);
 
             //Creating a circle which represents the origin of the zone
@@ -45,8 +47,20 @@ namespace DynamicNetwork
 
             mCircleCenterPositionShape.Position = mPosition;
             mWindow.Draw(mCircleCenterPositionShape);
+
+
         }
 
+        public void DrawConnections()
+        {
+            if (mIntersectionsFromZone.Count > 0)
+            {
+                for (int i = 1; i < mIntersectionsFromZone.Count; i++)
+                {
+                    MathUtil.Line(mWindow, mIntersectionsFromZone[i - 1].PointA, mIntersectionsFromZone[i].PointB, Color.Red);
+                }
+            }
+        }
         
         public Intersection GetIntersections(CircleZone other)
         {
@@ -94,6 +108,41 @@ namespace DynamicNetwork
             return intersection;
         }
 
+        public Intersection GetMiddleOfIntersection(CircleZone other)
+        {
+            Vector2f direction = other.mPosition - mPosition;
+            float distanceAway = MathUtil.Length(direction);
+
+            // Both Circles are to far away from ech other - no intersections
+            if (distanceAway > mRadius + other.mRadius)
+                return null;
+            // No intersection because one circle is contained within the other.
+            if (distanceAway < Math.Abs(mRadius - other.mRadius))
+                return null;
+            // coincident - infinite number of solutions.
+            if (Math.Abs(distanceAway) < 0.001f && Math.Abs(mRadius - other.mRadius) < 0.001f)
+                return null;
+
+
+            // Calculation based on
+            // https://stackoverflow.com/questions/3349125/circle-circle-intersection-points
+            // TODOO: Optimization
+
+            double r0_squ = Math.Pow(mRadius, 2);
+            double r1_squ = Math.Pow(other.mRadius, 2);
+            double d_squ = Math.Pow(distanceAway, 2);
+            Vector2f p0 = mPosition;
+
+            float a = (float)(r0_squ - r1_squ + d_squ) / (2 * distanceAway);
+
+            Vector2f p2 = p0 + a * MathUtil.Normalize(direction);
+
+            return new Intersection(p2,p2);
+        }
+
+
+
+
         public bool PointInZone(Vector2f point)
         {
             Vector2f direction = point - mPosition;
@@ -127,6 +176,16 @@ namespace DynamicNetwork
         public int GetNodeIdx()
         {
             return mNodeIdx;
+        }
+
+        public void ClearIntersectionsFromZone()
+        {
+            mIntersectionsFromZone.Clear();
+        }
+
+        public void AddIntersectionsFromZone(Intersection intersection)
+        {
+            mIntersectionsFromZone.Add(intersection);
         }
     }
 }
