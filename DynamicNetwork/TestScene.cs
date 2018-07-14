@@ -16,7 +16,7 @@ namespace DynamicNetwork
         private const int SOLVER_ITERATIONS = 10;
         private const float ZONE_INITIAL_RADIUS = 30;
         private const float ZONE_OFFSET = 20;
-        private const float SPRING_STIFFNESS = 0.05f;
+        private const float SPRING_STIFFNESS = 1f;
 
         private RenderWindow mWindow;
         private Simulator mSimulator;
@@ -33,6 +33,8 @@ namespace DynamicNetwork
 
         private LinkedList<CurrentConnection> mNetwork;
 
+        //Temp
+        private Random rnd;
 
         public TestScene(RenderWindow window)
         {
@@ -48,7 +50,8 @@ namespace DynamicNetwork
             mCentroidMarker = new CircleShape(2);
             mCentroidMarker.FillColor = Color.Black;
             mCentroidMarker.Origin = new Vector2f(1,1);
-            //
+            //Temp
+            rnd = new Random();
 
             #region initZones
 
@@ -163,6 +166,36 @@ namespace DynamicNetwork
             mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[14], mCircleZones[15], mCircleZones[18]));
 
             mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[0],mTriangleMidPoints[1]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[1], mTriangleMidPoints[2]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[2], mTriangleMidPoints[3]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[3], mTriangleMidPoints[4]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[0], mTriangleMidPoints[6]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[2], mTriangleMidPoints[8]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[10], mTriangleMidPoints[4]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[5], mTriangleMidPoints[6]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[6], mTriangleMidPoints[7]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[7], mTriangleMidPoints[8]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[9], mTriangleMidPoints[8]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[9], mTriangleMidPoints[10]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[10], mTriangleMidPoints[11]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[5], mTriangleMidPoints[12]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[14], mTriangleMidPoints[7]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[16], mTriangleMidPoints[9]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[18], mTriangleMidPoints[11]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[12], mTriangleMidPoints[13]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[13], mTriangleMidPoints[14]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[14], mTriangleMidPoints[15]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[15], mTriangleMidPoints[16]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[17], mTriangleMidPoints[16]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[17], mTriangleMidPoints[18]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[13], mTriangleMidPoints[19]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[15], mTriangleMidPoints[21]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[23], mTriangleMidPoints[17]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[19], mTriangleMidPoints[20]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[20], mTriangleMidPoints[21]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[21], mTriangleMidPoints[22]));
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[22], mTriangleMidPoints[23]));
+
 
             #endregion
         }
@@ -188,6 +221,11 @@ namespace DynamicNetwork
 
 
 
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
+            {
+                SpringConstraint spring = (SpringConstraint) mSpringConstraints[rnd.Next(mSpringConstraints.Count)];
+                spring.mRestLength += - 5 + rnd.Next(10);
+            }
 
 
         }
