@@ -9,23 +9,23 @@ namespace DynamicNetwork
 {
     class TriangleMidpoint
     {
-        private int mCircleZoneIdx0;
-        private int mCircleZoneIdx1;
-        private int mCircleZoneIdx2;
+        private CircleZone mCircleZone0;
+        private CircleZone mCircleZone1;
+        private CircleZone mCircleZone2;
         private Vector2f mMidPoint;
 
-        public TriangleMidpoint(int circleZoneIdx0, int circleZoneIdx1, int circleZoneIdx2)
+        public TriangleMidpoint(CircleZone circleZone0, CircleZone circleZone1, CircleZone circleZone2)
         {
-            mCircleZoneIdx0 = circleZoneIdx0;
-            mCircleZoneIdx1 = circleZoneIdx1;
-            mCircleZoneIdx2 = circleZoneIdx2;
+            mCircleZone0 = circleZone0;
+            mCircleZone1 = circleZone1;
+            mCircleZone2 = circleZone2;
         }
 
-        public void CalculateMidPoint(List<CircleZone> circleZones)
+        public void CalculateMidPoint()
         {
-            Vector2f position0 = circleZones[mCircleZoneIdx0].GetPosition();
-            Vector2f position1 = circleZones[mCircleZoneIdx1].GetPosition();
-            Vector2f position2 = circleZones[mCircleZoneIdx2].GetPosition();
+            Vector2f position0 = mCircleZone0.GetPosition();
+            Vector2f position1 = mCircleZone1.GetPosition();
+            Vector2f position2 = mCircleZone2.GetPosition();
 
             mMidPoint = (position0 + position1 + position2) / 3f;
         }

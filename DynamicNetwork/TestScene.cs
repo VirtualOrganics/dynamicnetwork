@@ -25,6 +25,8 @@ namespace DynamicNetwork
         private List<Node> mNodes;
         private List<TriangleMidpoint> mTriangleMidPoints;
         private List<Vector2f> mCentroids;
+        private List<CurrentConnection> mCurrentConnections;
+
         private Vector2f mousePos;
         private CircleZone mCurrentSelected;
         private CircleShape mCentroidMarker;
@@ -41,6 +43,7 @@ namespace DynamicNetwork
             mTriangleMidPoints = new List<TriangleMidpoint>(24);
             mNodes = new List<Node>(100);
             mCentroids = new List<Vector2f>(100);
+            mCurrentConnections = new List<CurrentConnection>(200);
             mNetwork = new LinkedList<CurrentConnection>();
             mCentroidMarker = new CircleShape(2);
             mCentroidMarker.FillColor = Color.Black;
@@ -131,36 +134,35 @@ namespace DynamicNetwork
             }
             mSimulator.AddConstraints(mSpringConstraints);
             
-            mTriangleMidPoints.Add(new TriangleMidpoint(0, 4, 3));
-            mTriangleMidPoints.Add(new TriangleMidpoint(0, 1, 4));
-            mTriangleMidPoints.Add(new TriangleMidpoint(1, 4, 5));
-            mTriangleMidPoints.Add(new TriangleMidpoint(1, 5, 2));
-            mTriangleMidPoints.Add(new TriangleMidpoint(2, 5, 6));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[0], mCircleZones[4], mCircleZones[3]));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[0], mCircleZones[1], mCircleZones[4]));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[1], mCircleZones[4], mCircleZones[5]));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[1], mCircleZones[5], mCircleZones[2]));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[2], mCircleZones[5], mCircleZones[6]));
 
-            mTriangleMidPoints.Add(new TriangleMidpoint(3, 7, 8));
-            mTriangleMidPoints.Add(new TriangleMidpoint(3, 4, 8));
-            mTriangleMidPoints.Add(new TriangleMidpoint(4, 8, 9));
-            mTriangleMidPoints.Add(new TriangleMidpoint(4, 5, 9));
-            mTriangleMidPoints.Add(new TriangleMidpoint(5, 9, 10));
-            mTriangleMidPoints.Add(new TriangleMidpoint(5, 6, 10));
-            mTriangleMidPoints.Add(new TriangleMidpoint(6, 10, 11));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[3], mCircleZones[7], mCircleZones[8]));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[3], mCircleZones[4], mCircleZones[8]));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[4], mCircleZones[8], mCircleZones[9]));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[4], mCircleZones[5], mCircleZones[9]));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[5], mCircleZones[9], mCircleZones[10]));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[5], mCircleZones[6], mCircleZones[10]));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[6], mCircleZones[10], mCircleZones[11]));
 
-            mTriangleMidPoints.Add(new TriangleMidpoint(7, 8, 12));
-            mTriangleMidPoints.Add(new TriangleMidpoint(12,8, 13));
-            mTriangleMidPoints.Add(new TriangleMidpoint(8, 13, 9));
-            mTriangleMidPoints.Add(new TriangleMidpoint(13, 9, 14));
-            mTriangleMidPoints.Add(new TriangleMidpoint(9, 10, 14));
-            mTriangleMidPoints.Add(new TriangleMidpoint(14, 10, 15));
-            mTriangleMidPoints.Add(new TriangleMidpoint(10, 11, 15));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[7], mCircleZones[8], mCircleZones[12]));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[12], mCircleZones[8], mCircleZones[13]));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[8], mCircleZones[13], mCircleZones[9]));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[13], mCircleZones[9], mCircleZones[14]));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[9], mCircleZones[10], mCircleZones[14]));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[14], mCircleZones[10], mCircleZones[15]));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[10], mCircleZones[11], mCircleZones[15]));
 
-            mTriangleMidPoints.Add(new TriangleMidpoint(12, 13, 16));
-            mTriangleMidPoints.Add(new TriangleMidpoint(16, 13, 17));
-            mTriangleMidPoints.Add(new TriangleMidpoint(13, 17, 14));
-            mTriangleMidPoints.Add(new TriangleMidpoint(17, 14, 18));
-            mTriangleMidPoints.Add(new TriangleMidpoint(14, 15, 18));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[12], mCircleZones[13], mCircleZones[16]));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[16], mCircleZones[13], mCircleZones[17]));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[13], mCircleZones[17], mCircleZones[14]));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[17], mCircleZones[14], mCircleZones[18]));
+            mTriangleMidPoints.Add(new TriangleMidpoint(mCircleZones[14], mCircleZones[15], mCircleZones[18]));
 
-            mNetwork.ad
-
+            mCurrentConnections.Add(new CurrentConnection(mTriangleMidPoints[0],mTriangleMidPoints[1]));
 
             #endregion
         }
@@ -180,7 +182,7 @@ namespace DynamicNetwork
 
             for (int i=0;i<mTriangleMidPoints.Count;i++)
             {
-                mTriangleMidPoints[i].CalculateMidPoint(mCircleZones);
+                mTriangleMidPoints[i].CalculateMidPoint();
                 mCentroids.Add(mTriangleMidPoints[i].GetMidPoint());
             }
 
@@ -206,6 +208,11 @@ namespace DynamicNetwork
             {
                 mCentroidMarker.Position = mCentroids[i];
                 mWindow.Draw(mCentroidMarker);
+            }
+
+            foreach (CurrentConnection connection in mCurrentConnections)
+            {
+                connection.DrawConnection(mWindow);
             }
         }
         
